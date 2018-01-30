@@ -77,6 +77,11 @@
             <artifactId>guava</artifactId>
             <version>19.0</version>
         </dependency>
+        <dependency>
+            <groupId>in.ashwanthkumar</groupId>
+            <artifactId>slack-java-webhook</artifactId>
+            <version>0.0.9</version>
+        </dependency>
     </dependencies>
 
     <build>
