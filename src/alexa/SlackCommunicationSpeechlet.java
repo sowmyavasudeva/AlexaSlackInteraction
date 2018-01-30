@@ -129,7 +129,6 @@ public class SlackCommunicationSpeechlet implements SpeechletV2 {
                 Reprompt repromptSpeech = new Reprompt();
                 repromptSpeech.setOutputSpeech(repromptOutputSpeech);
 
-                // If the joke has to be restarted, then keep the session alive
                 return SpeechletResponse.newAskResponse(outputSpeech, repromptSpeech, simpleCard);
             }
         } else {
