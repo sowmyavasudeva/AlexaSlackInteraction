@@ -1,6 +1,7 @@
 package alexa;
 
 import com.amazon.speech.json.SpeechletRequestEnvelope;
+import com.amazon.speech.slu.Intent;
 import com.amazon.speech.speechlet.*;
 import com.amazon.speech.ui.*;
 import lombok.extern.slf4j.Slf4j;
@@ -26,11 +27,40 @@ public class SlackCommunicationSpeechlet implements SpeechletV2 {
     public SpeechletResponse onLaunch(SpeechletRequestEnvelope<LaunchRequest> speechletRequestEnvelope) {
         log.info("Session launched with session id = {}, request = id = {}", speechletRequestEnvelope.getSession().getSessionId(),
                 speechletRequestEnvelope.getRequest().getRequestId());
-        return null;
+        Session session = speechletRequestEnvelope.getSession();
+       // return null;
+        return handleGetChannelIntent(session);
     }
 
+
     public SpeechletResponse onIntent(SpeechletRequestEnvelope<IntentRequest> speechletRequestEnvelope) {
-        return null;
+        IntentRequest request = speechletRequestEnvelope.getRequest();
+        Session session = speechletRequestEnvelope.getSession();
+
+        Intent intent = request.getIntent();
+        String intentName = (intent != null) ? intent.getName() : null;
+
+        if ("handleGetChannelIntent".equals(intentName)) {
+            return handleGetChannelIntent(session);
+        } else if ("handleGetMessageIntent".equals(intentName)) {
+            return handleGetMessageIntent(session);
+        } else if ("handleMessageSentIntent".equals(intentName)) {
+            return handleMessageSentIntent(session);
+        } else if ("AMAZON.StopIntent".equals(intentName)) {
+            PlainTextOutputSpeech outputSpeech = new PlainTextOutputSpeech();
+            outputSpeech.setText("Goodbye");
+
+            return SpeechletResponse.newTellResponse(outputSpeech);
+        } else if ("AMAZON.CancelIntent".equals(intentName)) {
+            PlainTextOutputSpeech outputSpeech = new PlainTextOutputSpeech();
+            outputSpeech.setText("Goodbye");
+
+            return SpeechletResponse.newTellResponse(outputSpeech);
+        } else {
+            String errorSpeech = "This is unsupported.  Please try something else.";
+            return newAskResponse(errorSpeech, false, errorSpeech, false);
+        }
+//        return null;
     }
 
     public void onSessionEnded(SpeechletRequestEnvelope<SessionEndedRequest> speechletRequestEnvelope) {
@@ -112,7 +142,7 @@ public class SlackCommunicationSpeechlet implements SpeechletV2 {
                 SsmlOutputSpeech outputSpeech = new SsmlOutputSpeech();
                 outputSpeech.setSsml("<speak>" + speechOutput + "</speak>");
                 SlackWebhook slackWebhook = new SlackWebhook(WEBHOOK_URL);
-//                slackWebhook.sendMessageToSlack();
+//                slackWebhook.sendMessageToSlack(message);
                 return SpeechletResponse.newTellResponse(outputSpeech, simpleCard);
             } else {
                 session.setAttribute(STAGE, CHANNEL_NAME_STAGE);

@@ -11,9 +11,13 @@ import java.util.Set;
  */
 public class SlackCommunicationRequestStreamHandler extends SpeechletRequestStreamHandler {
 
-    private static final Set<String> APPLICATION_IDS = Sets.newHashSet("amzn1.ask.skill.745a4c6e-7a07-413e-82eb-3415d9877ca8");
+    private static final Set<String> APPLICATION_IDS = Sets.newHashSet("amzn1.ask.skill.df5e9b7c-4b71-4442-80d7-4460f2c281f1");
 
-    public SlackCommunicationRequestStreamHandler(SpeechletV2 speechlet) {
+    public SlackCommunicationRequestStreamHandler() {
+        super(new SlackCommunicationSpeechlet(), APPLICATION_IDS);
+    }
+
+    public SlackCommunicationRequestStreamHandler(SpeechletV2 speechlet, Set<String> supportedApplicationIds) {
         super(speechlet, APPLICATION_IDS);
     }
 }
