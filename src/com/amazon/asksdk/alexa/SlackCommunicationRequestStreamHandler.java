@@ -1,4 +1,4 @@
-package alexa;
+package com.amazon.asksdk.alexa;
 
 import com.amazon.speech.speechlet.SpeechletV2;
 import com.amazon.speech.speechlet.lambda.SpeechletRequestStreamHandler;
